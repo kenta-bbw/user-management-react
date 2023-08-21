@@ -20,6 +20,7 @@
         </div>
         <div class="form-group">
           <button type="submit" class="btn btn-primary">Create User</button>
+          <button class="btn backbutton" @click="redirectToDashboard">Back</button>
         </div>
       </form>
     </div>
@@ -57,7 +58,10 @@
         } catch (error) {
           console.error('Error creating user:', error);
         }
-      }
+      },
+			redirectToDashboard(){
+      this.$router.push({ name: 'Dashboard'});
+    }
     }
   };
   </script>
@@ -110,6 +114,10 @@
 .btn-primary {
   background-color: #007bff;
   color: #fff;
+}
+.backbutton{
+	background-color: #dc3545;
+	color: #fff;
 }
 
 .btn-primary:hover {

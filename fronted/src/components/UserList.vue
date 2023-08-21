@@ -37,7 +37,8 @@
 export default {
   data() {
     return {
-      users: []
+      users: [],
+      searchInput: ''
     };
   },
   mounted() {
@@ -74,7 +75,7 @@ export default {
     },
     redirectToCreateForm(){
       this.$router.push({ name: 'CreateUser'});
-    }
+    },    
   }
   };
 </script>
