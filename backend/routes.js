@@ -33,7 +33,7 @@ router.get('/users', (req, res) => {
   
   router.post('/users', (req, res) => {
     const { firstname,lastname, phone, email, country } = req.body;
-    db.query('INSERT INTO users (name, phone, email, country) VALUES (?, ?, ?, ?)', [firstname, lastname, phone, email, country], (err, result) => {
+    db.query('INSERT INTO users (firstname, lastname, phone, email, country) VALUES (? ,?, ?, ?, ?)', [firstname, lastname, phone, email, country], (err, result) => {
       if (err) {
         console.error('Error executing query:', err);
         res.status(500).json({ error: 'Error creating user' });

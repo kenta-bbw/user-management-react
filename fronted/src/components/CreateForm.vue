@@ -1,70 +1,86 @@
 <template>
-    <div>
+  <div>
     <h2 class="form-title">Create New User</h2>
-      <form @submit.prevent="createUser" class="user-form">
-        <div class="form-group">
-          <label for="name">Name:</label>
-          <input type="text" id="name" v-model="newUser.name" class="form-control" />
-        </div>
-        <div class="form-group">
-          <label for="phone">Phone:</label>
-          <input type="text" id="phone" v-model="newUser.phone" class="form-control" />
-        </div>
-        <div class="form-group">
-          <label for="email">Email:</label>
-          <input type="email" id="email" v-model="newUser.email" class="form-control" />
-        </div>
-        <div class="form-group">
-          <label for="country">Country:</label>
-          <input type="text" id="country" v-model="newUser.country" class="form-control" />
-        </div>
-        <div class="form-group">
-          <button type="submit" class="btn btn-primary">Create User</button>
-          <button class="btn backbutton" @click="redirectToDashboard">Back</button>
-        </div>
-      </form>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        newUser: {
-          name: '',
-          phone: '',
-          email: '',
-          country: ''
+    <form @submit.prevent="createUser" class="user-form">
+      <div class="form-group">
+        <label for="name">Firstame:</label>
+        <input type="text" id="firstname" v-model="newUser.firstname" class="form-control" required />
+      </div>     
+      <div class="form-group">
+        <label for="name">Lastame:</label>
+        <input type="text" id="lastname" v-model="newUser.lastname" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" v-model="newUser.phone" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" v-model="newUser.email" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label for="country">Country:</label>
+        <input type="text" id="country" v-model="newUser.country" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary" :disabled="isFormInvalid">Create User</button>
+        <button class="btn backbutton" @click="redirectToDashboard">Back</button>
+      </div>
+    </form>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      newUser: {
+        name: '',
+        phone: '',
+        email: '',
+        country: ''
+      }
+    };
+  },
+  computed: {
+    isFormInvalid() {
+      return (
+        !this.newUser.firstname ||
+        !this.newUser.lastname ||
+        !this.newUser.phone ||
+        !this.newUser.email ||
+        !this.newUser.country
+      );
+    }
+  },
+  methods: {
+    async createUser() {
+      try {
+        const response = await fetch('http://localhost:3000/api/users', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(this.newUser)
+        });
+
+        if (response.ok) {
+          console.log('User created successfully');
+          this.$router.push({ name: 'Dashboard' });
+        } else {
+          console.error('Failed to create user');
         }
-      };
+      } catch (error) {
+        console.error('Error creating user:', error);
+      }
     },
-    methods: {
-      async createUser() {
-        try {
-          const response = await fetch('http://localhost:3000/api/users', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(this.newUser)
-          });
-  
-          if (response.ok) {
-            console.log('User created successfully');
-            this.$router.push({ name: 'Dashboard' });
-          } else {
-            console.error('Failed to create user');
-          }
-        } catch (error) {
-          console.error('Error creating user:', error);
-        }
-      },
-			redirectToDashboard(){
-      this.$router.push({ name: 'Dashboard'});
+    redirectToDashboard() {
+      this.$router.push({ name: 'Dashboard' });
     }
-    }
-  };
-  </script>
+  }
+};
+</script>
+
   
 <style scoped>
 *{
