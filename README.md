@@ -24,16 +24,26 @@ This is a simple user management application created as a learning project to pr
    git clone https://github.com/your-username/user-management-app.git
 Install dependencies:
    ```bash
-   cd user-management-app
+   cd frontend
    npm install
    ```
-
+Install dependencies:
+   ```bash
+   cd backend
+   npm install
+   ```
 
 2. Configure API Endpoint:
 Update the API endpoint in your Vue components to match your backend server's URL.
 Run the application:
 
    ```bash
+   cd frontend
    npm run serve
+   ```
+
+   ```bash
+   cd backend
+   npm run start
    ```
 Open your browser and navigate to http://localhost:8080 to access the application.
