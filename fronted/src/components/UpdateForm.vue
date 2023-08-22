@@ -3,8 +3,12 @@
     <h2 class="form-title">Edit User</h2>
     <form @submit.prevent="saveChanges" class="user-form">
       <div class="form-group">
-        <label for="name">Name:</label>
-        <input type="text" id="name" v-model="editedUser.name" class="form-control" />
+        <label for="firstname">Firstname:</label>
+        <input type="text" id="firstname" v-model="editedUser.firstname" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label for="lastname">Lastname:</label>
+        <input type="text" id="lastname" v-model="editedUser.lastname" class="form-control" />
       </div>
       <div class="form-group">
         <label for="phone">Phone:</label>
