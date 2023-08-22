@@ -3,24 +3,29 @@
     <h2 class="form-title">Create New User</h2>
     <form @submit.prevent="createUser" class="user-form">
       <div class="form-group">
-        <label for="name">Firstame:</label>
+        <label for="name">Firstname:</label>
         <input type="text" id="firstname" v-model="newUser.firstname" class="form-control" required />
+        <span v-if="!newUser.firstname" class="error-message">First name is required</span>
       </div>     
       <div class="form-group">
-        <label for="name">Lastame:</label>
+        <label for="name">Lastname:</label>
         <input type="text" id="lastname" v-model="newUser.lastname" class="form-control" required />
+        <span v-if="!newUser.lastname" class="error-message">Last name is required</span>
       </div>
       <div class="form-group">
         <label for="phone">Phone:</label>
         <input type="text" id="phone" v-model="newUser.phone" class="form-control" required />
+        <span v-if="!newUser.phone" class="error-message">Phone is required</span>
       </div>
       <div class="form-group">
         <label for="email">Email:</label>
         <input type="email" id="email" v-model="newUser.email" class="form-control" required />
+        <span v-if="!newUser.email" class="error-message">Email is required</span>
       </div>
       <div class="form-group">
         <label for="country">Country:</label>
         <input type="text" id="country" v-model="newUser.country" class="form-control" required />
+        <span v-if="!newUser.country" class="error-message">Country is required</span>
       </div>
       <div class="form-group">
         <button type="submit" class="btn btn-primary" :disabled="isFormInvalid">Create User</button>
@@ -138,5 +143,9 @@ export default {
 
 .btn-primary:hover {
   background-color: #0056b3;
+}
+.error-message{
+color: red;
+font-size: 12px;
 }
 </style>

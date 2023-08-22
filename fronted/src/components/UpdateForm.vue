@@ -1,29 +1,34 @@
 <template>
   <div>
-    <h2 class="form-title">Edit User</h2>
+    <h2 class="form-title">Create New User</h2>
     <form @submit.prevent="saveChanges" class="user-form">
       <div class="form-group">
         <label for="firstname">Firstname:</label>
-        <input type="text" id="firstname" v-model="editedUser.firstname" class="form-control" />
+        <input type="text" id="firstname" v-model="editedUser.firstname" class="form-control" required />
+        <span v-if="!editedUser.firstname" class="error-message">First name is required</span>
       </div>
       <div class="form-group">
         <label for="lastname">Lastname:</label>
-        <input type="text" id="lastname" v-model="editedUser.lastname" class="form-control" />
+        <input type="text" id="lastname" v-model="editedUser.lastname" class="form-control" required />
+        <span v-if="!editedUser.lastname" class="error-message">Last name is required</span>
       </div>
       <div class="form-group">
         <label for="phone">Phone:</label>
-        <input type="text" id="phone" v-model="editedUser.phone" class="form-control" />
+        <input type="text" id="phone" v-model="editedUser.phone" class="form-control" required />
+        <span v-if="!editedUser.phone" class="error-message">Phone is required</span>
       </div>
       <div class="form-group">
         <label for="email">Email:</label>
-        <input type="email" id="email" v-model="editedUser.email" class="form-control" />
+        <input type="email" id="email" v-model="editedUser.email" class="form-control" required />
+        <span v-if="!editedUser.email" class="error-message">Email is required</span>
       </div>
       <div class="form-group">
         <label for="country">Country:</label>
-        <input type="text" id="country" v-model="editedUser.country" class="form-control" />
+        <input type="text" id="country" v-model="editedUser.country" class="form-control" required />
+        <span v-if="!editedUser.country" class="error-message">Country is required</span>
       </div>
       <div class="form-group">
-        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <button type="submit" class="btn btn-primary" :disabled="isFormInvalid">Save Changes</button>
       </div>
     </form>
   </div>
@@ -31,17 +36,27 @@
 
 <script>
 export default {
-  props: ['userId'], 
-
+  props: ['userId'],
   data() {
     return {
-      originalUser: {}, 
-      editedUser: {} 
+      originalUser: {},
+      editedUser: {}
     };
+  },
+  computed: {
+    isFormInvalid() {
+      return (
+        !this.editedUser.firstname ||
+        !this.editedUser.lastname ||
+        !this.editedUser.phone ||
+        !this.editedUser.email ||
+        !this.editedUser.country
+      );
+    }
   },
   async mounted() {
     await this.fetchUser();
-    this.editedUser = { ...this.originalUser }; 
+    this.editedUser = { ...this.originalUser };
   },
   methods: {
     async fetchUser() {
@@ -73,10 +88,15 @@ export default {
       } catch (error) {
         console.error('Error saving changes:', error);
       }
+    },
+    redirectToDashboard() {
+      this.$router.push({ name: 'Dashboard' });
     }
   }
 };
 </script>
+
+
 <style scoped>
 *{
   font-family: 'Roboto', sans-serif;
@@ -129,5 +149,9 @@ export default {
 
 .btn-primary:hover {
   background-color: #0056b3;
+}
+.error-message{
+color: red;
+font-size: 12px;
 }
 </style>
