@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="form-title">Create New User</h2>
+    <h2 class="form-title">Edit User</h2>
     <form @submit.prevent="saveChanges" class="user-form">
       <div class="form-group">
         <label for="firstname">Firstname:</label>

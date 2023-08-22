@@ -63,26 +63,27 @@ export default {
     };
   },
   mounted() {
-    this.fetchUsers();
     this.filterUsers();
+    this.fetchUsers();
   },
   methods: {
+
     async fetchUsers() {
   try {
     const response = await fetch('http://localhost:3000/api/users');
     const data = await response.json();
+    this.filteredUsers = data;
     this.users = data;
     this.uniqueCountries = [...new Set(this.users.map(user => user.country))];
-    console.log('Fetched Users:', this.users);
+    console.log('Fetched Users:', this.filteredUsers);
   } catch (error) {
     console.error('Error fetching users:', error);
   }
 }
 ,
-
     filterUsers() {
       console.log('Selected Country:', this.selectedCountry);
-      console.log('Users:', this.filteredUsers);
+      // console.log('Users:', this.filteredUsers);
       if (this.selectedCountry === '') {
         this.filteredUsers = this.users;
       } else {
