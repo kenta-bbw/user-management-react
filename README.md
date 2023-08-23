@@ -46,4 +46,4 @@ Run the application:
    cd backend
    npm run start
    ```
-Open your browser and navigate to http://localhost:8080 to access the application.
+Open your browser and navigate to http://localhost:8080/dashboard to access the application.
