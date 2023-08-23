@@ -3,24 +3,28 @@
     <h2 class="form-title">Edit User</h2>
     <form @submit.prevent="saveChanges" class="user-form">
       <div class="form-group">
-        <label for="firstname">Firstname:</label>
+        <label for="name">Firstname:</label>
         <input type="text" id="firstname" v-model="editedUser.firstname" class="form-control" required />
         <span v-if="!editedUser.firstname" class="error-message">First name is required</span>
-      </div>
+        <span v-if="showFirstnameErrorMessage" class="error-message">Invalid firstname format | firstname can only contain <b>a-z A-Z</b></span>
+      </div>     
       <div class="form-group">
-        <label for="lastname">Lastname:</label>
+        <label for="name">Lastname:</label>
         <input type="text" id="lastname" v-model="editedUser.lastname" class="form-control" required />
         <span v-if="!editedUser.lastname" class="error-message">Last name is required</span>
+        <span v-if="showLastnameErrorMessage" class="error-message">Invalid lastname format | lastname can only contain <b>a-z A-Z</b></span>
       </div>
       <div class="form-group">
         <label for="phone">Phone:</label>
         <input type="text" id="phone" v-model="editedUser.phone" class="form-control" required />
         <span v-if="!editedUser.phone" class="error-message">Phone is required</span>
+        <span v-if="showPhoneErrorMessage" class="error-message">Invalid phone format | phone can only contain <b>0-9 - ()</b></span>
       </div>
       <div class="form-group">
         <label for="email">Email:</label>
         <input type="email" id="email" v-model="editedUser.email" class="form-control" required />
         <span v-if="!editedUser.email" class="error-message">Email is required</span>
+        <span v-if="showEmailErrorMessage" class="error-message">Invalid email format | email cannot contain <b>"!#$%^&*()_-+=,</b></span>
       </div>
       <div class="form-group">
         <label for="country">Country:</label>
@@ -40,7 +44,11 @@ export default {
   data() {
     return {
       originalUser: {},
-      editedUser: {}
+      editedUser: {},
+      showFirstnameErrorMessage:false,
+      showLastnameErrorMessage: false,
+      showPhoneErrorMessage:false,
+      showEmailErrorMessa: false,
     };
   },
   computed: {
@@ -69,6 +77,38 @@ export default {
       }
     },
     async saveChanges() {
+      this.showFirstnameErrorMessage = false;
+      this.showLastnameErrorMessage = false;
+      this.showPhoneErrorMessage = false;
+      this.showEmailErrorMessage = false;
+
+      const validEmail = this.editedUser.email.replace(/[^a-zA-Z0-9@.]/g, '');
+      if (validEmail !== this.editedUser.email) {
+        this.showEmailErrorMessage = true; 
+        return;
+      }
+      this.editedUser.email = validEmail;
+
+      const validFirstname = this.editedUser.firstname.replace(/[^a-zA-Z]/g, '');
+      if (validFirstname !== this.editedUser.firstname) {
+        this.showFirstnameErrorMessage = true; 
+        return;
+      }
+      this.editedUser.firstname = validFirstname;
+
+      const validLastname = this.editedUser.lastname.replace(/[^a-zA-Z]/g, '');
+      if (validLastname !== this.editedUser.lastname) {
+        this.showLastnameErrorMessage = true; 
+        return;
+      }
+      this.editedUser.lastname = validLastname;
+
+      const validPhone = this.editedUser.phone.replace(/[^0-9-() ]/g, '');
+      if (validPhone !== this.editedUser.phone) {
+        this.showPhoneErrorMessage = true; 
+        return;
+      }
+      this.editedUser.phone = validPhone;
       try {
         const response = await fetch(`http://localhost:3000/api/users/${this.userId}`, {
           method: 'PUT',
@@ -95,6 +135,7 @@ export default {
   }
 };
 </script>
+
 
 
 <style scoped>

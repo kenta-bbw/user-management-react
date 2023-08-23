@@ -83,7 +83,7 @@ export default {
 ,
     filterUsers() {
       console.log('Selected Country:', this.selectedCountry);
-      // console.log('Users:', this.filteredUsers);
+      console.log('Users:', this.filteredUsers);
       if (this.selectedCountry === '') {
         this.filteredUsers = this.users;
       } else {
@@ -115,6 +115,7 @@ export default {
 
         if (response.ok) {
           this.users = this.users.filter(user => user.id !== userId);
+          this.filteredUsers = this.users.filter(user => user.id !== userId);
           console.log('User deleted successfully');
         } else {
           console.error('Failed to delete user');

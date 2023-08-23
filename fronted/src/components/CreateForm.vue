@@ -6,21 +6,25 @@
         <label for="name">Firstname:</label>
         <input type="text" id="firstname" v-model="newUser.firstname" class="form-control" required />
         <span v-if="!newUser.firstname" class="error-message">First name is required</span>
+        <span v-if="showFirstnameErrorMessage" class="error-message">Invalid firstname format | firstname can only contain <b>a-z A-Z</b></span>
       </div>     
       <div class="form-group">
         <label for="name">Lastname:</label>
         <input type="text" id="lastname" v-model="newUser.lastname" class="form-control" required />
         <span v-if="!newUser.lastname" class="error-message">Last name is required</span>
+        <span v-if="showLastnameErrorMessage" class="error-message">Invalid lastname format | lastname can only contain <b>a-z A-Z</b></span>
       </div>
       <div class="form-group">
         <label for="phone">Phone:</label>
         <input type="text" id="phone" v-model="newUser.phone" class="form-control" required />
         <span v-if="!newUser.phone" class="error-message">Phone is required</span>
+        <span v-if="showPhoneErrorMessage" class="error-message">Invalid phone format | phone can only contain <b>0-9 - ()</b></span>
       </div>
       <div class="form-group">
         <label for="email">Email:</label>
         <input type="email" id="email" v-model="newUser.email" class="form-control" required />
         <span v-if="!newUser.email" class="error-message">Email is required</span>
+        <span v-if="showEmailErrorMessage" class="error-message">Invalid email format | email cannot contain <b>"!#$%^&*()_-+=,</b></span>
       </div>
       <div class="form-group">
         <label for="country">Country:</label>
@@ -28,11 +32,11 @@
         <span v-if="!newUser.country" class="error-message">Country is required</span>
       </div>
       <div class="form-group">
-        <button type="submit" class="btn btn-primary" :disabled="isFormInvalid">Create User</button>
+        <button type="submit" class="btn btn-primary" :disabled="isFormInvalid || showErrorMessage">Create User</button>
         <button class="btn backbutton" @click="redirectToDashboard">Back</button>
       </div>
     </form>
-  </div>
+      </div>
 </template>
 
 <script>
@@ -40,11 +44,16 @@ export default {
   data() {
     return {
       newUser: {
-        name: '',
+        firstname: '',
+        lastname: '',
         phone: '',
         email: '',
         country: ''
-      }
+      },
+      showFirstnameErrorMessage: false,
+      showLastnameErrorMessage: false, 
+      showPhoneErrorMessage: false,
+      showEmailErrorMessage: false, 
     };
   },
   computed: {
@@ -60,6 +69,40 @@ export default {
   },
   methods: {
     async createUser() {
+      // Reset all error messages before validation checks
+      this.showFirstnameErrorMessage = false;
+      this.showLastnameErrorMessage = false;
+      this.showPhoneErrorMessage = false;
+      this.showEmailErrorMessage = false;
+
+      const validEmail = this.newUser.email.replace(/[^a-zA-Z0-9@.]/g, '');
+      if (validEmail !== this.newUser.email) {
+        this.showEmailErrorMessage = true; 
+        return;
+      }
+      this.newUser.email = validEmail;
+
+      const validFirstname = this.newUser.firstname.replace(/[^a-zA-Z]/g, '');
+      if (validFirstname !== this.newUser.firstname) {
+        this.showFirstnameErrorMessage = true; 
+        return;
+      }
+      this.newUser.firstname = validFirstname;
+
+      const validLastname = this.newUser.lastname.replace(/[^a-zA-Z]/g, '');
+      if (validLastname !== this.newUser.lastname) {
+        this.showLastnameErrorMessage = true; 
+        return;
+      }
+      this.newUser.lastname = validLastname;
+
+      const validPhone = this.newUser.phone.replace(/[^0-9-() ]/g, '');
+      if (validPhone !== this.newUser.phone) {
+        this.showPhoneErrorMessage = true; 
+        return;
+      }
+      this.newUser.phone = validPhone;
+
       try {
         const response = await fetch('http://localhost:3000/api/users', {
           method: 'POST',
