@@ -2,8 +2,8 @@ const mysql = require('mysql2');
 const connection = mysql.createConnection({
     host: '127.0.0.1',
     user: 'root',
-    password: '',
-    database: 'nexcctest'
+    password: '1234',
+    database: 'db-user-mgmt'
   });
   
   connection.connect((err) => {
